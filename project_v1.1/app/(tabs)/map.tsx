@@ -3,12 +3,15 @@ import { StyleSheet, View, Image, Text, Modal, Button, TouchableOpacity } from '
 import MapView, { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
 import markersData from './../../assets/state'
+import { useGlobalSearchParams } from 'expo-router'; // Для отримання параметрів з URL
 
 export default function App() {
   const [location, setLocation] = useState<any>(null);
   const [errorMsg, setErrorMsg] = useState<any>(null);
   const [selectedMarker, setSelectedMarker] = useState<any>(null); // Для обраного маркера
   const [modalVisible, setModalVisible] = useState(false); // Контроль модального вікна
+  const { category } = useGlobalSearchParams(); // Отримуємо category з URL
+
 
   useEffect(() => {
     (async () => {
@@ -38,6 +41,7 @@ export default function App() {
 
   return (
     <View style={styles.container}>
+      <Text style={styles.categoryLabel}>{category === '1' ? 'Alcohol' : 'Other Category'}</Text>
       <MapView
         style={styles.map}
         initialRegion={{
@@ -50,16 +54,17 @@ export default function App() {
         showsMyLocationButton
       >
         {markersData.map(marker => (
-          <Marker
-            key={marker.id}
-            coordinate={marker.coordinates}
-            title={marker.title}
-            description={marker.description}
-            onPress={() => handleMarkerPress(marker)} // Відкриваємо модальне вікно при натисканні
-          >
-            
-          </Marker>
+          category === marker.category_id.toString() && (
+            <Marker
+              key={marker.id}
+              coordinate={marker.coordinates}
+              title={marker.title}
+              description={marker.description}
+              onPress={() => handleMarkerPress(marker)} // Відкриваємо модальне вікно при натисканні
+            />
+          )
         ))}
+
       </MapView>
 
       {/* Модальне вікно */}
@@ -86,7 +91,6 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
     justifyContent: 'center',
     flex: 1,
   },
@@ -124,6 +128,14 @@ const styles = StyleSheet.create({
   closeButtonText: {
     color: 'white',
     textAlign: 'center',
+  },
+  categoryLabel: {
+    marginTop: 130,
+    padding: 10,
+    textAlignVertical: 'center',
+    fontSize: 20,
+    fontWeight: "400",
+    textAlign: 'left',
   },
 });
 

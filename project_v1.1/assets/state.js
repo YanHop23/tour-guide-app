@@ -1,6 +1,7 @@
   const markersData = [
     {
       id: 1,
+      category_id: 1,
       title: "Добрий друг 4",
       description: "Це перше цікаве місце",
       coordinates: {
@@ -10,6 +11,7 @@
     },
     {
       id: 2,
+      category_id: 1,
       title: "Гребуче ябко",
       description: "Це друге цікаве місце",
       coordinates: {
@@ -19,6 +21,7 @@
     },
     {
       id: 3,
+      category_id: 1,
       title: "Човен",
       description: "Це третє цікаве місце",
       coordinates: {
